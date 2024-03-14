@@ -12,7 +12,8 @@ depends=('bash' 'glibc' 'libarchive' 'curl' 'gpgme' 'pacman-mirrorlist'
          'gettext' 'gawk' 'coreutils' 'gnupg' 'grep')
 makedepends=('meson' 'asciidoc' 'doxygen')
 checkdepends=('python' 'fakechroot')
-optdepends=('perl-locale-gettext: translation support in makepkg-template')
+optdepends=('base-devel: required to use makepkg'
+            'perl-locale-gettext: translation support in makepkg-template')
 provides=('libalpm.so')
 backup=(etc/pacman.conf
         etc/makepkg.conf)
