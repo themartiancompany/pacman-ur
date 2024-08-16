@@ -4,7 +4,9 @@
 pkgname=pacman
 pkgver=7.0.0.r1.g7cf2b01
 pkgrel=1
-_commit=7cf2b0186d873be4218fe5be127dd029a0af03fe
+# use annotated tag and patch level commit from release branch (can be empty for no patches)
+_git_tag=7.0.0
+_git_patch_level_commit=7cf2b0186d873be4218fe5be127dd029a0af03fe
 pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64')
 url="https://www.archlinux.org/pacman/"
@@ -41,12 +43,12 @@ backup=(etc/pacman.conf
         etc/makepkg.conf)
 validpgpkeys=('6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD'  # Allan McRae <allan@archlinux.org>
               'B8151B117037781095514CA7BBDFFC92306B1121') # Andrew Gregory (pacman) <andrew@archlinux.org>
-source=("git+https://gitlab.archlinux.org/pacman/pacman.git#commit=${_commit}"
+source=("git+https://gitlab.archlinux.org/pacman/pacman.git#tag=v${_git_tag}?signed"
         revertme-makepkg-remove-libdepends-and-libprovides.patch::https://gitlab.archlinux.org/pacman/pacman/-/commit/354a300cd26bb1c7e6551473596be5ecced921de.patch
         pacman.conf
         makepkg.conf
         alpm.sysusers)
-sha256sums=('955e38a88c99a42600f24219a3084855d2d37dc10df5473604e62913876cb42b'
+sha256sums=('06d082c3ce6f0811ca728515aa82d69d372800bd3ada99f5c445ef9429b6e3a6'
             'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
             '0e84952e4b8eacbb38c018608d152ddd6f98e205c4c6c7d3cdca854d4b7d4179'
             '23d512b4d504c36fd49b58a32eb1a93a7f2ed67424a3672fc3c645cb443ad6f7'
@@ -59,6 +61,15 @@ pkgver() {
 
 prepare() {
   cd "$pkgname"
+
+  # apply patch level commits on top of annotated tag
+  if [[ -n ${_git_patch_level_commit} ]]; then
+    if [[ v${_git_tag} != $(git describe --tags --abbrev=0 "${_git_patch_level_commit}") ]] then
+      error "patch level commit ${_git_patch_level_commit} is not a descendant of v${_git_tag}"
+      exit 1
+    fi
+    git rebase "${_git_patch_level_commit}"
+  fi
 
   # handle patches
   local -a patches
