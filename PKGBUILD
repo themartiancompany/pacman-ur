@@ -9,11 +9,32 @@ pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64')
 url="https://www.archlinux.org/pacman/"
 license=('GPL-2.0-or-later')
-depends=('bash' 'glibc' 'libarchive' 'curl' 'gpgme' 'pacman-mirrorlist'
-         'gettext' 'gawk' 'coreutils' 'gnupg' 'grep')
-makedepends=('meson' 'asciidoc' 'doxygen' 'git')
-checkdepends=('python' 'fakechroot')
-optdepends=('perl-locale-gettext: translation support in makepkg-template')
+depends=(
+  bash
+  coreutils
+  curl
+  gawk
+  gettext
+  glibc
+  gnupg
+  gpgme
+  grep
+  libarchive
+  pacman-mirrorlist
+)
+makedepends=(
+  asciidoc
+  doxygen
+  git
+  meson
+)
+checkdepends=(
+  fakechroot
+  python
+)
+optdepends=(
+  'perl-locale-gettext: translation support in makepkg-template'
+)
 provides=('libalpm.so')
 backup=(etc/pacman.conf
         etc/makepkg.conf)
