@@ -21,6 +21,7 @@ depends=(
   grep
   libarchive
   pacman-mirrorlist
+  systemd
 )
 makedepends=(
   asciidoc
@@ -43,11 +44,13 @@ validpgpkeys=('6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD'  # Allan McRae <allan@a
 source=("git+https://gitlab.archlinux.org/pacman/pacman.git#commit=${_commit}"
         revertme-makepkg-remove-libdepends-and-libprovides.patch::https://gitlab.archlinux.org/pacman/pacman/-/commit/354a300cd26bb1c7e6551473596be5ecced921de.patch
         pacman.conf
-        makepkg.conf)
+        makepkg.conf
+        alpm.sysusers)
 sha256sums=('955e38a88c99a42600f24219a3084855d2d37dc10df5473604e62913876cb42b'
             'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
-            '656c4d4cb8cb12adbf178fc8cb2fd25f8c285d6572bbdbb24d865d00e0d5a85a'
-            '23d512b4d504c36fd49b58a32eb1a93a7f2ed67424a3672fc3c645cb443ad6f7')
+            '0e84952e4b8eacbb38c018608d152ddd6f98e205c4c6c7d3cdca854d4b7d4179'
+            '23d512b4d504c36fd49b58a32eb1a93a7f2ed67424a3672fc3c645cb443ad6f7'
+            'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c')
 
 pkgver() {
   cd "$pkgname"
@@ -105,6 +108,7 @@ package() {
   install -dm755 "$pkgdir/etc"
   install -m644 "$srcdir/pacman.conf" "$pkgdir/etc"
   install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc"
+  install -D -m644 "$srcdir/alpm.sysusers" "${pkgdir}"/usr/lib/sysusers.d/alpm.conf
 
   local wantsdir="$pkgdir/usr/lib/systemd/system/sockets.target.wants"
   install -dm755 "$wantsdir"
