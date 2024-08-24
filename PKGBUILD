@@ -36,6 +36,7 @@ checkdepends=(
   python
 )
 optdepends=(
+  'base-devel: required to use makepkg'
   'perl-locale-gettext: translation support in makepkg-template'
 )
 provides=('libalpm.so')
