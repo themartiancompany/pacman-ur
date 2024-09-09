@@ -2,11 +2,11 @@
 # Maintainer: Morten Linderud <foxboron@archlinux.org>
 
 pkgname=pacman
-pkgver=7.0.0.r1.g7cf2b01
+pkgver=7.0.0.r3.g7736133
 pkgrel=1
 # use annotated tag and patch level commit from release branch (can be empty for no patches)
 _git_tag=7.0.0
-_git_patch_level_commit=7cf2b0186d873be4218fe5be127dd029a0af03fe
+_git_patch_level_commit=77361331ae3864c6ea880e715c5864d59336f275
 pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64')
 url="https://www.archlinux.org/pacman/"
