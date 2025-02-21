@@ -3,7 +3,7 @@
 
 pkgname=pacman
 pkgver=7.0.0.r6.gc685ae6
-pkgrel=1
+pkgrel=2
 # use annotated tag and patch level commit from release branch (can be empty for no patches)
 _git_tag=7.0.0
 _git_patch_level_commit=c685ae6412af04cae1eaa5d6bda8c277c7ffb8c8
@@ -53,7 +53,7 @@ source=("git+https://gitlab.archlinux.org/pacman/pacman.git#tag=v${_git_tag}?sig
         rust.conf)
 sha256sums=('06d082c3ce6f0811ca728515aa82d69d372800bd3ada99f5c445ef9429b6e3a6'
             'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
-            '0e84952e4b8eacbb38c018608d152ddd6f98e205c4c6c7d3cdca854d4b7d4179'
+            'bc80e9d0439caddd29b99a69b5060b5589cad2398c23abc5b2b8b990fae6ad8c'
             'd99c1f9608362fff9ab3a2ca0a3096a317927b42a6725bc86599da6849c9c67c'
             'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c'
             '59a8bbdc32830c90dbce5ead9f90074a2bb31cd85ec92bc5f92251bb4bcf8a1d')
