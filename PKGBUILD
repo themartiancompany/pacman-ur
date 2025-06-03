@@ -3,7 +3,7 @@
 
 pkgname=pacman
 pkgver=7.0.0.r6.gc685ae6
-pkgrel=4
+pkgrel=5
 # use annotated tag and patch level commit from release branch (can be empty for no patches)
 _git_tag=7.0.0
 _git_patch_level_commit=c685ae6412af04cae1eaa5d6bda8c277c7ffb8c8
@@ -75,6 +75,9 @@ prepare() {
     fi
     git rebase "${_git_patch_level_commit}"
   fi
+
+  # Initialise callback event fields
+  git cherry-pick -n '0d37c1daa0990766d12d0060a353c829bf8616eb'
 
   # handle patches
   local -a patches
