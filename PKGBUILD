@@ -2,11 +2,11 @@
 # Maintainer: Morten Linderud <foxboron@archlinux.org>
 
 pkgname=pacman
-pkgver=7.0.0.r6.gc685ae6
-pkgrel=6
+pkgver=7.0.0.r7.g1f38429
+pkgrel=0
 # use annotated tag and patch level commit from release branch (can be empty for no patches)
 _git_tag=7.0.0
-_git_patch_level_commit=c685ae6412af04cae1eaa5d6bda8c277c7ffb8c8
+_git_patch_level_commit=1f38429b1c5f30edce30c731aa352e6363cc788e
 pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64')
 url="https://www.archlinux.org/pacman/"
@@ -75,9 +75,6 @@ prepare() {
     fi
     git rebase "${_git_patch_level_commit}"
   fi
-
-  # Initialise callback event fields
-  git cherry-pick -n '0d37c1daa0990766d12d0060a353c829bf8616eb'
 
   # handle patches
   local -a patches
