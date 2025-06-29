@@ -43,6 +43,7 @@ optdepends=(
 provides=('libalpm.so')
 backup=(etc/pacman.conf
         etc/makepkg.conf
+        etc/makepkg.conf.d/fortran.conf
         etc/makepkg.conf.d/rust.conf)
 validpgpkeys=('6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD'  # Allan McRae <allan@archlinux.org>
               'B8151B117037781095514CA7BBDFFC92306B1121') # Andrew Gregory (pacman) <andrew@archlinux.org>
@@ -51,12 +52,14 @@ source=("git+https://gitlab.archlinux.org/pacman/pacman.git#tag=v${_git_tag}?sig
         pacman.conf
         makepkg.conf
         alpm.sysusers
+        fortran.conf
         rust.conf)
 sha256sums=('06d082c3ce6f0811ca728515aa82d69d372800bd3ada99f5c445ef9429b6e3a6'
             'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
             'bc80e9d0439caddd29b99a69b5060b5589cad2398c23abc5b2b8b990fae6ad8c'
             'd99c1f9608362fff9ab3a2ca0a3096a317927b42a6725bc86599da6849c9c67c'
             'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c'
+            '933b0b878fa611bf24b92f655040a3bcb4a1b67841d929013802abbb09b2ccf4'
             '6fe03e6ea3f69d99d59a48847a8ae97c2160fca847c7aedf7b89d05e4aa9386d')
 
 pkgver() {
@@ -125,6 +128,7 @@ package() {
   install -m644 "$srcdir/pacman.conf" "$pkgdir/etc"
   install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc"
   install -D -m644 "$srcdir/alpm.sysusers" "${pkgdir}"/usr/lib/sysusers.d/alpm.conf
+  install -m644 "$srcdir/fortran.conf" "$pkgdir/etc/makepkg.conf.d"
   install -m644 "$srcdir/rust.conf" "$pkgdir/etc/makepkg.conf.d"
 
   local wantsdir="$pkgdir/usr/lib/systemd/system/sockets.target.wants"
