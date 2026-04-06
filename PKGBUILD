@@ -42,12 +42,91 @@
 #   Morten Linderud
 #     <foxboron@archlinux.org>
 
+_os="$(
+  uname \
+    -o)"
+# Android and Windows do require patches
+# or to import them to the repo.
+# I'll do that asap
+if [[ "${_os}" == "Android" ]]; then
+  _libc="ndk-sysroot"
+  _compiler="clang"
+  _libcompiler="llvm-libs"
+  _npth="libnpth"
+  _pcsclite="libpcsclite"
+elif [[ "${_os}" == "GNU/Linux" ]]; then
+  _libc="glibc"
+  _compiler="gcc"
+  _libcompiler="libgcc"
+  _npth="npth"
+  _pcsclite="pcsclite"
+elif [[ "${_os}" == "Msys" ]]; then
+  _libc="msys2-w32api-runtime"
+  _libc_headers="msys2-w32api-headers"
+  _compiler="gcc"
+  _libcompiler="gcc-libs"
+  _npth="npth"
+  _pcsclite="pcsclite"
+  _pcsclite="pcsclite"
+  _sh="sh"
+else
+  _msg=(
+    "Unknown os '${_os}'."
+  )
+  msg \
+    "${_msg[*]}"
+  _libc="msys2-w32api-runtime"
+  _libc_headers="msys2-w32api-headers"
+  _compiler="gcc"
+  _libcompiler="gcc-libs"
+  _npth="npth"
+  _pcsclite="pcsclite"
+  _pcsclite="pcsclite"
+  _sh="sh"
+fi
+_evmfs_available="$(
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
+if [[ ! -v "_git" ]]; then
+  _git="false"
+fi
+if [[ ! -v "_offline" ]]; then
+  _offline="false"
+fi
+if [[ ! -v "_git_service" ]]; then
+  _git_service="github"
+fi
+if [[ ! -v "_archive_format" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      _archive_format="bundle"
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="git"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _archive_format="zip"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _archive_format="tar.gz"
+    fi
+  fi
+fi
 _pkg=pacman
 pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
-pkgver=7.1.0.1
+_pkgver=7.1.0.1
+pkgver="${_pkgver}"
 pkgrel=0
 # use annotated tag and patch level commit from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -92,9 +171,13 @@ depends=(
 makedepends=(
   "asciidoc"
   "doxygen"
-  "git"
   "meson"
 )
+if [[ "${_git}" == "true" ]]; then
+  makedepends+=(
+    "git"
+  )
+fi
 checkdepends=(
   "fakechroot"
   "python"
@@ -160,9 +243,9 @@ pkgver() {
       'v*' |
     sed \
     's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
-  else
+  elif [[ "${_git}" == "false" ]]; then
     echo \
-      "7.1.0.1"
+      "${_pkgver}"
   fi
 }
 
