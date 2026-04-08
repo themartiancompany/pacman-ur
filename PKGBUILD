@@ -267,7 +267,7 @@ backup=(
 # whats this
 _libdepends_libprovides_commit="354a300cd26bb1c7e6551473596be5ecced921de"
 source=(
-  "revertme-makepkg-remove-libdepends-and-libprovides.patch::${_url_old}/-/commit/${_libdepends_libprovides_commit}"
+  "revertme-makepkg-remove-libdepends-and-libprovides.patch::${_url_old}/-/commit/${_libdepends_libprovides_commit}.patch"
   "${_pkg}.conf"
   "makepkg.conf"
   "alpm.sysusers"
