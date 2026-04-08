@@ -42,6 +42,21 @@
 #   Morten Linderud
 #     <foxboron@archlinux.org>
 
+_etc_get() {
+  local \
+    _etc \
+    _os
+  _os="$(
+    uname \
+      -o)"
+  _etc="etc"
+  if [[ "${_os}" == "Android" ]]; then
+    _etc="usr/etc"
+  fi
+  echo \
+    "${_etc}"
+}
+
 _os="$(
   uname \
     -o)"
@@ -102,8 +117,15 @@ fi
 if [[ ! -v "_offline" ]]; then
   _offline="false"
 fi
+if [[ ! -v "_ns" ]]; then
+  _ns="themartiancompany"
+  # went rogue
+  # _ns="pacman"
+fi
 if [[ ! -v "_git_service" ]]; then
-  _git_service="github"
+  if [[ "${_ns}" == "themartiancompany" ]]; then
+    _git_service="github"
+  fi
 fi
 if [[ ! -v "_archive_format" ]]; then
   if [[ "${_git}" == "true" ]]; then
@@ -120,6 +142,22 @@ if [[ ! -v "_archive_format" ]]; then
     fi
   fi
 fi
+if [[ ! -v "_docs" ]]; then
+  _docs="true"
+fi
+if [[ ! -v "_systemd" ]]; then
+  if [[ "${_os}" == "Android" || \
+        "${_os}" == "Msys" ]]; then
+    # should check if sissystemd is
+    # available
+    _systemd="false"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    # for now we do assume yes
+    # but it should simply be detected
+    _systemd="true"
+  fi
+fi
+_py="python"
 _pkg=pacman
 pkgbase="${_pkg}"
 pkgname=(
@@ -128,10 +166,16 @@ pkgname=(
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
 pkgrel=0
-# use annotated tag and patch level commit from release branch (can be empty for no patches)
+# use annotated tag and patch level commit
+# from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
-_git_patch_level_commit=1f38429b1c5f30edce30c731aa352e6363cc788e
-pkgdesc="A library-based package manager with dependency support"
+_commit="db6c5c87a553d56719546c4c2ac3db4e24f7db3c"
+_git_patch_level_commit="1f38429b1c5f30edce30c731aa352e6363cc788e"
+_pkgdesc=(
+  "A library-based package"
+  "manager with dependency support."
+)
+pkgdesc="${_pkgdesc[*]}"
 arch=(
   "aarch64"
   "arm"
@@ -143,8 +187,9 @@ arch=(
   "powerpc"
   'x86_64'
 )
+_http_arch="https://gitlab.archlinux.org"
+_url_old="${_http_arch}/${_pkg}/${_pkg}"
 _http="https://github.com"
-_ns="themartiancompany"
 url="${_http}/${_ns}/${_pkg}"
 license=(
   'GPL-2.0-or-later'
@@ -156,7 +201,7 @@ depends=(
   "libcurl.so"
   "gawk"
   "gettext"
-  "glibc"
+  "${_libc}"
   "gnupg"
   "gpgme"
   "libgpgme.so"
@@ -165,14 +210,22 @@ depends=(
   "libarchive.so"
   "openssl"
   "libcrypto.so"
-  "pacman-mirrorlist"
-  "systemd"
 )
+if [[ "${_os}" == "GNU/Linux" ]]; then
+  depends+=(
+    "${_pkg}-mirrorlist"
+    "systemd"
+  )
+fi
 makedepends=(
-  "asciidoc"
-  "doxygen"
   "meson"
 )
+if [[ "${_docs}" == "true" ]]; then
+  makedepends+=(
+    "asciidoc"
+    "doxygen"
+  )
+fi
 if [[ "${_git}" == "true" ]]; then
   makedepends+=(
     "git"
@@ -180,7 +233,7 @@ if [[ "${_git}" == "true" ]]; then
 fi
 checkdepends=(
   "fakechroot"
-  "python"
+  "${_py}"
 )
 _base_devel_optdepends=(
   'base-devel:'
@@ -190,18 +243,104 @@ _perl_locale_gettext_optdepends=(
   'perl-locale-gettext:'
     "translation support in makepkg-template"
 )
+_reallymakepkg_optdepends=(
+  "reallymakepkg:"
+    "needed to build packages"
+    "reliably"
+)
 optdepends=(
   "${_base_devel_optdepends[*]}"
   "${_perl_locale_gettext_optdepends[*]}"
+  "${_reallymakepkg_optdepends[*]}"
 )
 provides=(
   'libalpm.so'
 )
+_etc="$(
+  _etc_get)"
 backup=(
-  "etc/pacman.conf"
-  "etc/makepkg.conf"
-  "etc/makepkg.conf.d/fortran.conf"
-  "etc/makepkg.conf.d/rust.conf"
+  "${_etc}/pacman.conf"
+  "${_etc}/makepkg.conf"
+  "${_etc}/makepkg.conf.d/fortran.conf"
+  "${_etc}/makepkg.conf.d/rust.conf"
+)
+# whats this
+_libdepends_libprovides_commit="354a300cd26bb1c7e6551473596be5ecced921de"
+source=(
+  "revertme-makepkg-remove-libdepends-and-libprovides.patch::${_url_old}/-/commit/${_libdepends_libprovides_commit}"
+  "${_pkg}.conf"
+  "makepkg.conf"
+  "alpm.sysusers"
+  "fortran.conf"
+  "rust.conf"
+)
+sha256sums=(
+  'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
+  'bc80e9d0439caddd29b99a69b5060b5589cad2398c23abc5b2b8b990fae6ad8c'
+  'd99c1f9608362fff9ab3a2ca0a3096a317927b42a6725bc86599da6849c9c67c'
+  'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c'
+  '933b0b878fa611bf24b92f655040a3bcb4a1b67841d929013802abbb09b2ccf4'
+  '6fe03e6ea3f69d99d59a48847a8ae97c2160fca847c7aedf7b89d05e4aa9386d'
+)
+_url="${url}"
+_tag="${_commit}"
+_tag_name="commit"
+_tarname="${pkgname}-${_tag}"
+_tarfile="${_tarname}.${_archive_format}"
+_bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
+_bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
+_github_sum="6c98e5cf4c77f55f34ea9cdd1b30f3c448144c8c7465bebbe783857474cd098f"
+_github_sig_sum="f4edbd032f5b0af607fab1225d458aeac08963ff069817e75cc7582b153f837c"
+# Dvorak
+_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+_evmfs_network="100"
+_evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
+_evmfs_src="${_tarfile}::${_evmfs_uri}"
+_sig_uri="${_evmfs_dir}/${_sig_sum}"
+_sig_src="${_tarfile}.sig::${_sig_uri}"
+if [[ "${_evmfs}" == "true" ]]; then
+  _src="${_evmfs_src}"
+  if [[ "${_git}" == "false" ]]; then
+    source+=(
+      "${_sig_src}"
+    )
+    sha256sums+=(
+      "${_sig_sum}"
+    )
+  elif [[ "${_git}" == "true" ]]; then
+    source+=(
+      "${_bundle_sig_src}"
+    )
+    sha256sums+=(
+      "${_bundle_sig_sum}"
+    )
+  fi
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == true ]]; then
+    _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+    _sum="SKIP"
+  elif [[ "${_git}" == false ]]; then
+    _uri=""
+    if [[ "${_git_service}" == "github" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/archive/${_commit}.${_archive_format}"
+        _sum="${_github_sum}"
+      fi
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
+      fi
+    fi
+    _src="${_tarfile}::${_uri}"
+  fi
+fi
+source+=(
+  "${_src}"
+)
+sha256sums+=(
+  "${_sum}"
 )
 validpgpkeys=(
   # Truocolo
@@ -212,24 +351,6 @@ validpgpkeys=(
   # Pellegrino Prevete (dvorak)
   #   <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
   '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
-)
-source=(
-  "git+https://gitlab.archlinux.org/pacman/pacman.git#tag=v${_git_tag}?signed"
-  "revertme-makepkg-remove-libdepends-and-libprovides.patch::https://gitlab.archlinux.org/pacman/pacman/-/commit/354a300cd26bb1c7e6551473596be5ecced921de.patch"
-  "pacman.conf"
-  "makepkg.conf"
-  "alpm.sysusers"
-  "fortran.conf"
-  "rust.conf"
-)
-sha256sums=(
-  '06d082c3ce6f0811ca728515aa82d69d372800bd3ada99f5c445ef9429b6e3a6'
-  'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
-  'bc80e9d0439caddd29b99a69b5060b5589cad2398c23abc5b2b8b990fae6ad8c'
-  'd99c1f9608362fff9ab3a2ca0a3096a317927b42a6725bc86599da6849c9c67c'
-  'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c'
-  '933b0b878fa611bf24b92f655040a3bcb4a1b67841d929013802abbb09b2ccf4'
-  '6fe03e6ea3f69d99d59a48847a8ae97c2160fca847c7aedf7b89d05e4aa9386d'
 )
 
 pkgver() {
@@ -242,7 +363,7 @@ pkgver() {
     --match \
       'v*' |
     sed \
-    's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+      's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
   elif [[ "${_git}" == "false" ]]; then
     echo \
       "${_pkgver}"
@@ -250,76 +371,161 @@ pkgver() {
 }
 
 prepare() {
+  local \
+    _commit_short \
+    _patch
+  local \
+    -a \
+    _patches
   cd \
     "${_tarname}"
-
+  _commit_short="$(
+    git \
+      describe \
+        --tags \
+        --abbrev=0 \
+        "${_git_patch_level_commit}")"
   # apply patch level commits on top of annotated tag
-  if [[ -n ${_git_patch_level_commit} ]]; then
-    if [[ v${_git_tag} != $(git describe --tags --abbrev=0 "${_git_patch_level_commit}") ]] then
-      error "patch level commit ${_git_patch_level_commit} is not a descendant of v${_git_tag}"
-      exit 1
+  if [[ -n "${_git_patch_level_commit}" ]]; then
+    if [[ "v${_git_tag}" != "${_commit_short}" ]] then
+      _msg=(
+        "Patch level commit '${_git_patch_level_commit}"
+        "is not a descendant of v${_git_tag}."
+      )
+      error \
+        "${_msg[*]}"
+      exit \
+        1
     fi
-    git rebase "${_git_patch_level_commit}"
+    git \
+      rebase \
+      "${_git_patch_level_commit}"
   fi
-
   # handle patches
-  local -a patches
-  patches=($(printf '%s\n' "${source[@]}" | grep '.patch'))
-  patches=("${patches[@]%%::*}")
-  patches=("${patches[@]##*/}")
-
-  if (( ${#patches[@]} != 0 )); then
-    for patch in "${patches[@]}"; do
-      if [[ $patch =~ revertme-* ]]; then
-        msg2 "Reverting patch $patch..."
-        patch -RNp1 < "../$patch"
+  _patches=( $(
+    printf \
+      '%s\n' \
+      "${source[@]}" |
+      grep \
+        '.patch')
+  )
+  _patches=(
+    "${_patches[@]%%::*}"
+  )
+  _patches=(
+    "${_patches[@]##*/}"
+  )
+  if (( ${#_patches[@]} != 0 )); then
+    for _patch in "${_patches[@]}"; do
+      if [[ "${_patch}" =~ revertme-* ]]; then
+        msg2 \
+          "Reverting patch '${_patch}'..."
+        patch \
+          -RNp1 < \
+          "../${_patch}"
       else
-        msg2 "Applying patch $patch..."
-        patch -Np1 < "../$patch"
+        msg2 \
+          "Applying patch '${_patch}'..."
+        patch \
+          -Np1 < \
+          "../${_patch}"
       fi
     done
   fi
 }
 
 build() {
-  cd "$pkgname"
-
-  meson --prefix=/usr \
-        --buildtype=plain \
-        -Ddoc=enabled \
-        -Ddoxygen=enabled \
-        -Dscriptlet-shell=/usr/bin/bash \
-        -Dldconfig=/usr/bin/ldconfig \
-        build
-
-  meson compile -C build
+  local \
+    _docs_option \
+    _meson_opts=()
+  if [[ "${_docs}" == "true" ]]; then
+    _docs_option="enabled"
+    _doxygen_option="enabled"
+  fi
+  _meson_opts+=(
+    --prefix="/usr"
+    --buildtype="plain"
+    -D
+      doc="${_docs_option}"
+    -D
+      doxygen="${_doxygen_option}"
+    -D
+      scriptlet-shell="/usr/bin/bash"
+    -D
+      ldconfig="/usr/bin/ldconfig"
+  )
+  cd \
+    "${_tarname}"
+  meson \
+    "${_meson_opts[@]}"
+    build
+  meson \
+    compile \
+    -C \
+      "build"
 }
 
 check() {
-  cd "$pkgname"
-
-  meson test -C build
+  cd \
+    "${_tarname}"
+  meson \
+    test \
+    -C \
+      "build"
 }
 
 package() {
-  cd "$pkgname"
-
-  DESTDIR="$pkgdir" meson install -C build
-
+  local \
+    _etc \
+    _unit \
+    _wantsdir
+  _wantsdir="${pkgdir}/usr/lib/systemd/system/sockets.target.wants"
+  _etc="$(
+    _etc_get)"
+  cd \
+    "${_tarname}"
+  DESTDIR="${pkgdir}" \
+  meson \
+    install \
+    -C \
+      "build"
   # install Arch specific stuff
-  install -dm755 "$pkgdir/etc"
-  install -m644 "$srcdir/pacman.conf" "$pkgdir/etc"
-  install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc"
-  install -D -m644 "$srcdir/alpm.sysusers" "${pkgdir}"/usr/lib/sysusers.d/alpm.conf
-  install -m644 "$srcdir/fortran.conf" "$pkgdir/etc/makepkg.conf.d"
-  install -m644 "$srcdir/rust.conf" "$pkgdir/etc/makepkg.conf.d"
-
-  local wantsdir="$pkgdir/usr/lib/systemd/system/sockets.target.wants"
-  install -dm755 "$wantsdir"
-
-  local unit
-  for unit in dirmngr gpg-agent gpg-agent-{browser,extra,ssh} keyboxd; do
-    ln -s "../${unit}@.socket" "$wantsdir/${unit}@etc-pacman.d-gnupg.socket"
+  install \
+    -vdm755 \
+    "${pkgdir}/${_etc}"
+  install \
+    -vDm644 \
+    "${srcdir}/${_pkg}.conf" \
+    "${pkgdir}/${_etc}"
+  install \
+    -vDm644 \
+    "${srcdir}/makepkg.conf" \
+    "${pkgdir}/${_etc}"
+  install \
+    -vDm644 \
+    "${srcdir}/alpm.sysusers" \
+    "${pkgdir}/usr/lib/sysusers.d/alpm.conf"
+  install \
+    -vDm644 \
+    "${srcdir}/fortran.conf" \
+    "${pkgdir}/${_etc}/makepkg.conf.d"
+  install \
+    -vDm644 \
+    "${srcdir}/rust.conf" \
+    "${pkgdir}/${_etc}/makepkg.conf.d"
+  if [[ "${_systemd}" == "true" ]]; then
+    install \
+      -vdm755 \
+      "${_wantsdir}"
+  fi
+  for _unit in "dirmngr" \
+               "gpg-agent" \
+               "gpg-agent-"{"browser","extra","ssh"} \
+               "keyboxd"; do
+    ln \
+      -s \
+      "../${_unit}@.socket" \
+      "${_wantsdir}/${_unit}@etc-pacman.d-gnupg.socket"
   done
 }
 
