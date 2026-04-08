@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=3
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -397,21 +397,21 @@ prepare() {
         --abbrev=0 \
         "${_git_patch_level_commit}")"
   # apply patch level commits on top of annotated tag
-  if [[ -n "${_git_patch_level_commit}" ]]; then
-    if [[ "v${_git_tag}" != "${_commit_short}" ]] then
-      _msg=(
-        "Patch level commit '${_git_patch_level_commit}"
-        "is not a descendant of v${_git_tag}."
-      )
-      error \
-        "${_msg[*]}"
-      exit \
-        1
-    fi
-    git \
-      rebase \
-      "${_git_patch_level_commit}"
-  fi
+  # if [[ -n "${_git_patch_level_commit}" ]]; then
+  #   if [[ "v${_git_tag}" != "${_commit_short}" ]] then
+  #     _msg=(
+  #       "Patch level commit '${_git_patch_level_commit}"
+  #       "is not a descendant of v${_git_tag}."
+  #     )
+  #     error \
+  #       "${_msg[*]}"
+  #     exit \
+  #       1
+  #   fi
+  #   git \
+  #     rebase \
+  #     "${_git_patch_level_commit}"
+  # fi
   # handle patches
   _patches=( $(
     printf \
