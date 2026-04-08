@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=1
+pkgrel=2
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
