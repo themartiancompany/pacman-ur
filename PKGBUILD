@@ -289,8 +289,17 @@ _tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
 _bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
-_github_sum="6c98e5cf4c77f55f34ea9cdd1b30f3c448144c8c7465bebbe783857474cd098f"
-_github_sig_sum="f4edbd032f5b0af607fab1225d458aeac08963ff069817e75cc7582b153f837c"
+_github_sum="053e7b0e44f41324c4edd1b7242733758e8c4f616c5e7581e95f1595ca0b3cdd"
+_github_sig_sum="be6b65c74c376f4cb9527abf9c44c0458c7653169853d9eb7d2c1b5809d9c59d"
+# All of this stuff must absoleutely go as
+# soon as EVMFS 1.0 and gurl release
+# I'm tired of specifying different sums
+# when everything can just be derived from
+# the commit
+if [[ "${_git_service}" == "github" ]]; then
+  _sum="${_github_sum}"
+  _sig_sum="${_github_sig_sum}"
+fi
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_network="100"
@@ -309,6 +318,7 @@ if [[ "${_evmfs}" == "true" ]]; then
     sha256sums+=(
       "${_sig_sum}"
     )
+    _sum="${_github_sum}"
   elif [[ "${_git}" == "true" ]]; then
     source+=(
       "${_bundle_sig_src}"
@@ -316,6 +326,7 @@ if [[ "${_evmfs}" == "true" ]]; then
     sha256sums+=(
       "${_bundle_sig_sum}"
     )
+    _sum="${_bundle_sum}"
   fi
 elif [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_git}" == true ]]; then
