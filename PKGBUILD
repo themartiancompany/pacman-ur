@@ -163,13 +163,13 @@ pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
-_pkgver=7.1.0.3
+_pkgver=7.1.0.4
 pkgver="${_pkgver}"
 pkgrel=1
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
-_git_tag=7.1.0.3
-_commit="f7c47033577d2b49acfe27d1253f9a226d00b042"
+_git_tag="${_pkgver}"
+_commit="19e900a0aa9f4edceb3e87c11faf20b7e73faf03"
 _git_patch_level_commit="1f38429b1c5f30edce30c731aa352e6363cc788e"
 _pkgdesc=(
   "A library-based package"
@@ -290,8 +290,8 @@ _tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
 _bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
-_github_sum="32e7b61225c362d1bdb3483afd443a3d4f575d2f1487100f3836711078fc3a56"
-_github_sig_sum="b860479ab421f3d349cde89f1e482cc1ba3aa912467b848dd0ad0a7add917926"
+_github_sum="c6426a13fad667a6d70d86e441d87227c01be0a5ebb118f4bb557e6b6f86a012"
+_github_sig_sum="215f0d4ad7ce6a8094cd3942ec9f89c4d6fb0173c290d47f87fce12b0d884483"
 # All of this stuff must absoleutely go as
 # soon as EVMFS 1.0 and gurl release
 # I'm tired of specifying different sums
