@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.9
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -522,7 +522,7 @@ build() {
   if [[ "${_os}" == "Android" ]]; then
     _cflags+=(
       -Wno-format-security
-      -Nno-undeclared-identifier
+      #-Nno-undeclared-identifiers
     )
   fi
   if [[ "${_docs}" == "true" ]]; then
