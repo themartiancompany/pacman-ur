@@ -1245,9 +1245,9 @@ jobs:
             ${{ github.event.release.upload_url }}
             # ${{ steps.create_release.outputs.upload_url }}
           asset_path:
-            "gnupg-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
+            "pacman-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
           asset_name:
-            "dogeos-android-gnupg-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
+            "dogeos-android-pacman-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
           asset_content_type:
             application/gzip
   arch_release:
@@ -2038,9 +2038,9 @@ jobs:
             ${{ github.event.release.upload_url }}
             # ${{ steps.create_release.outputs.upload_url }}
           asset_path:
-            "gnupg-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
+            "pacman-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
           asset_name:
-            "dogeos-gnu-gnupg-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
+            "dogeos-gnu-pacman-${{ steps.version.outputs.version }}-${{ matrix.architecture }}.pkg.tar.xz"
           asset_content_type:
             application/gzip
   msys2_release:
@@ -2572,9 +2572,9 @@ jobs:
             ${{ github.event.release.upload_url }}
             # ${{ steps.create_release.outputs.upload_url }}
           asset_path:
-            "gnupg-${{ steps.version.outputs.version }}-${{ matrix.arch }}.pkg.tar.xz"
+            "pacman-${{ steps.version.outputs.version }}-${{ matrix.arch }}.pkg.tar.xz"
           asset_name:
-            "dogeos-windows-gnupg-${{ steps.version.outputs.version }}-${{ matrix.arch }}.pkg.tar.xz"
+            "dogeos-windows-pacman-${{ steps.version.outputs.version }}-${{ matrix.arch }}.pkg.tar.xz"
           asset_content_type:
             application/gzip
 
