@@ -343,6 +343,7 @@ jobs:
             true
           /entrypoint.sh \
             rm \
+              -rf \
               "${HOME}/fur/termux/any/"*".pkg.tar."*".sig"
           /entrypoint.sh \
             pacman \
@@ -513,6 +514,7 @@ jobs:
               "libevm"
           /entrypoint.sh \
             rm \
+              -rf \
               "${HOME}/fur/termux/any/"*".pkg.tar."*".sig"
           /entrypoint.sh \
             pacman \
@@ -911,37 +913,6 @@ jobs:
           #   pip \
           #     install \
           #     "meson"
-      - name:
-          Installs Termux Keyring.
-        run: |
-          /entrypoint.sh \
-            fur \
-              -v \
-              -p \
-                "pacman" \
-              -d \
-              "termux-keyring"
-          /entrypoint.sh \
-            rm \
-              "${HOME}/fur/termux/any/"*".pkg.tar."*".sig"
-          /entrypoint.sh \
-            pacman \
-              -Udd \
-              --noconfirm \
-              "${HOME}/fur/termux/any/"*".pkg.tar."* \
-              --overwrite="*"
-          /entrypoint.sh \
-            rm \
-              -rf \
-              "${HOME}/fur"
-          /entrypoint.sh \
-            pacman-key \
-              --init || \
-            true
-          /entrypoint.sh \
-            pacman \
-              -Sy || \
-            true
       - name:
           Read pkgbase.
         run: |
