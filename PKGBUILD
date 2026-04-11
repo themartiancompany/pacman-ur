@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=19
+pkgrel=20
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -218,6 +218,7 @@ if [[ "${_os}" == "GNU/Linux" ]]; then
   )
 fi
 makedepends=(
+  "gettext"
   "meson"
 )
 if [[ "${_docs}" == "true" ]]; then
