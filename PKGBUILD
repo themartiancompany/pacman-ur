@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=27
+pkgrel=28
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -398,20 +398,27 @@ pkgver() {
 }
 
 _android_configure() {
-    # Not needed i gue-
-    # sed \
-    #   "/fakeroot.sh.in/d;
-    #    /sudo.sh.in/d" \
-    #   -i \
-    #   "scripts/libmakepkg/executable/meson.build"
-    # true location
-    sed \
-      -e \
-        "/command : ['\/bin\/true'],/command : ['true'],/g" \
-      -i \
-      "${srcdir}/${_tarname}/doc/meson.build"
-    cat \
-      "${srcdir}/${_tarname}/doc/meson.build"
+  local \
+    _msg=()
+  # Not needed i gue-
+  # sed \
+  #   "/fakeroot.sh.in/d;
+  #    /sudo.sh.in/d" \
+  #   -i \
+  #   "scripts/libmakepkg/executable/meson.build"
+  # true location
+  _msg=(
+    "wat"
+  )
+  echo \
+    "${_msg[*]}"
+  sed \
+    -e \
+      "%'/bin/true'%'true'%g" \
+    -i \
+    "${srcdir}/${_tarname}/doc/meson.build"
+  cat \
+    "${srcdir}/${_tarname}/doc/meson.build"
 }
 
 prepare() {
