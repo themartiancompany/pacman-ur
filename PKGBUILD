@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.5
 pkgver="${_pkgver}"
-pkgrel=1
+pkgrel=2
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -260,7 +260,7 @@ provides=(
 _etc="$(
   _etc_get)"
 backup=(
-  "${_etc}/pacman.conf"
+  "${_etc}/${_pkg}.conf"
   "${_etc}/makepkg.conf"
   "${_etc}/makepkg.conf.d/fortran.conf"
   "${_etc}/makepkg.conf.d/rust.conf"
@@ -290,8 +290,8 @@ _tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
 _bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
-_github_sum="c6426a13fad667a6d70d86e441d87227c01be0a5ebb118f4bb557e6b6f86a012"
-_github_sig_sum="215f0d4ad7ce6a8094cd3942ec9f89c4d6fb0173c290d47f87fce12b0d884483"
+_github_sum="c66f94770618706e8e84c058d6d1ffbce35651f140089f783510fe3b16a8cd6d"
+_github_sig_sum="697a0f64d4e9ad0e99cb914a16ebfbda2ccd7622df70687d524ea79f2dac89d2"
 # All of this stuff must absoleutely go as
 # soon as EVMFS 1.0 and gurl release
 # I'm tired of specifying different sums
@@ -311,10 +311,10 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _sig_sum="SKIP"
   elif [[ "${_git}" == "false" ]]; then
     if [[ "${_git_service}" == "github" ]]; then
-      # _sum="${_github_sum}"
-      # _sig_sum="${_github_sig_sum}"
-      _sum="SKIP"
-      _sig_sum="SKIP"
+      _sum="${_github_sum}"
+      _sig_sum="${_github_sig_sum}"
+      # _sum="SKIP"
+      # _sig_sum="SKIP"
     fi
   fi
 fi
@@ -598,7 +598,7 @@ package() {
     ln \
       -s \
       "../${_unit}@.socket" \
-      "${_wantsdir}/${_unit}@etc-pacman.d-gnupg.socket"
+      "${_wantsdir}/${_unit}@etc-${_pkg}.d-gnupg.socket"
   done
 }
 
