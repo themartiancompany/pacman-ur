@@ -1035,7 +1035,13 @@ jobs:
           ln \
             -s \
             "/bin/true" \
-            "/system/bin/true"
+            "/system/bin/true" || \
+          true
+          ln \
+            -s \
+            "/system/bin/true" \
+            "/data/data/com.termux/files/usr/bin/true" || \
+          true
           /entrypoint.sh \
             arch="${_arch}" \
             TERMUX_VERSION=50 \
