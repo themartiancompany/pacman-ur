@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=9
+pkgrel=10
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -279,8 +279,8 @@ sha256sums=(
   'bc80e9d0439caddd29b99a69b5060b5589cad2398c23abc5b2b8b990fae6ad8c'
   'd99c1f9608362fff9ab3a2ca0a3096a317927b42a6725bc86599da6849c9c67c'
   "190ef25d5a320d7cfe7a17683d1956f0c39710291ae27d0968d12f431cb2bdaa"
-  'c8760d7ebb6c9817d508c691c67084be251cd9c8811ee1ccf92c1278bad74c1c'
   '933b0b878fa611bf24b92f655040a3bcb4a1b67841d929013802abbb09b2ccf4'
+  "6fe03e6ea3f69d99d59a48847a8ae97c2160fca847c7aedf7b89d05e4aa9386d"
 )
 _url="${url}"
 _tag="${_commit}"
