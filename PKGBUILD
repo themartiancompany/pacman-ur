@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.9
 pkgver="${_pkgver}"
-pkgrel=1
+pkgrel=2
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -541,6 +541,8 @@ build() {
     -D
       ldconfig="/usr/bin/ldconfig"
   )
+  export \
+    CFLAGS="${_cflags[*]}"
   cd \
     "${_tarname}"
   meson \
