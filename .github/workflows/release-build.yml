@@ -308,6 +308,14 @@ jobs:
                 -y \
                 "make"
       - name:
+          Installs meson.
+        run: |
+          /entrypoint.sh \
+            pip \
+              install \
+                -y \
+                "meson"
+      - name:
           Installs Crash Bash Library.
         run: |
           /entrypoint.sh git \
