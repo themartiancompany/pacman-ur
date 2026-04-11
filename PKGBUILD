@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.11
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=3
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -543,12 +543,15 @@ build() {
       ldconfig="/usr/bin/ldconfig"
   )
   export \
-    CFLAGS="${_cflags[*]}"
+    CFLAGS="${_cflags[*]}" \
+    DESTDIR="${pkgname}"
   cd \
     "${_tarname}"
+  DESTDIR="${pkgdir}" \
   meson \
     "${_meson_opts[@]}" \
     build
+  DESTDIR="${pkgdir}" \
   meson \
     compile \
     -C \
