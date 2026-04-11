@@ -163,7 +163,7 @@ pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
-_pkgver=7.1.0.7
+_pkgver=7.1.0.8
 pkgver="${_pkgver}"
 pkgrel=1
 # use annotated tag and patch level commit
