@@ -303,6 +303,9 @@ if [[ "${_evmfs}" == "true" ]]; then
     _sig_sum="${_bundle_sig_sum}"
   fi
 elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    _sum="SKIP"
+    _sig_sum="SKIP"
   if [[ "${_git}" == "false" ]]; then
     if [[ "${_git_service}" == "github" ]]; then
       _sum="${_github_sum}"
