@@ -163,13 +163,13 @@ pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
-_pkgver=7.1.0.4
+_pkgver=7.1.0.5
 pkgver="${_pkgver}"
 pkgrel=1
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
-_commit="19e900a0aa9f4edceb3e87c11faf20b7e73faf03"
+_commit="b1f84b89062dda2beae629b0caee7532d491f561"
 _git_patch_level_commit="1f38429b1c5f30edce30c731aa352e6363cc788e"
 _pkgdesc=(
   "A library-based package"
@@ -311,8 +311,10 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _sig_sum="SKIP"
   elif [[ "${_git}" == "false" ]]; then
     if [[ "${_git_service}" == "github" ]]; then
-      _sum="${_github_sum}"
-      _sig_sum="${_github_sig_sum}"
+      # _sum="${_github_sum}"
+      # _sig_sum="${_github_sig_sum}"
+      _sum="SKIP"
+      _sig_sum="SKIP"
     fi
   fi
 fi
