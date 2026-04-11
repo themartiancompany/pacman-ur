@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=3
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -382,13 +382,31 @@ pkgver() {
   fi
 }
 
+_android_configure() {
+  # Not needed i guess
+  sed \
+    "/fakeroot.sh.in/d;
+     /sudo.sh.in/d" \
+    -i \
+    "scripts/libmakepkg/executable/meson.build"
+  # true location
+  sed \
+    "/command : ['\/usr\/bin\/true'],/command : ['true'],/" \
+    -i \
+    "doc/meson.build" \
+}
+
 prepare() {
   local \
     _commit_short \
+    _os \
     _patch
   local \
     -a \
     _patches
+  _os="$(
+    uname \
+      -o)"
   cd \
     "${_tarname}"
   _commit_short="$(
@@ -443,6 +461,9 @@ prepare() {
           "../${_patch}"
       fi
     done
+  fi
+  if [[ "${_os}" == "Android" ]]; then
+    _android_configure
   fi
 }
 
