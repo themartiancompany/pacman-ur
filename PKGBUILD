@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.12
 pkgver="${_pkgver}"
-pkgrel=3
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -436,9 +436,9 @@ _android_configure() {
   cat \
     "${srcdir}/${_tarname}/doc/meson.build"
   for _file in \
-    "${srcdir}/build-aux/meson-make-symlink.sh" \
-    "${srcdir}/lib/libalpm/trans.c" \
-    "${srcdir}/lib/libalpm/util.c"; do
+    "${srcdir}/${_tarname}/build-aux/meson-make-symlink.sh" \
+    "${srcdir}/${_tarname}/lib/libalpm/trans.c" \
+    "${srcdir}/${_tarname}/lib/libalpm/util.c"; do
     sed \
       -e \
         "s%@ANDROID_ROOT@%$(_root_get)%g" \
