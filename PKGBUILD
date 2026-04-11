@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.15
 pkgver="${_pkgver}"
-pkgrel=3
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -403,9 +403,9 @@ _root_get() {
   dirname \
     "$(dirname \
          "$(dirname \
-              command \
+              "$(command \
                 -v \
-                "env")")"
+                "env")")")"
 }
 
 _android_configure() {
