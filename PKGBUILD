@@ -165,11 +165,11 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=29
+pkgrel=30
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
-_git_tag=7.1.0.1
-_commit="db6c5c87a553d56719546c4c2ac3db4e24f7db3c"
+_git_tag=7.1.0.2
+_commit="a3a3b78d5d765762aa281c930351dfc89aa44466"
 _git_patch_level_commit="1f38429b1c5f30edce30c731aa352e6363cc788e"
 _pkgdesc=(
   "A library-based package"
@@ -290,8 +290,8 @@ _tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
 _bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
-_github_sum="053e7b0e44f41324c4edd1b7242733758e8c4f616c5e7581e95f1595ca0b3cdd"
-_github_sig_sum="be6b65c74c376f4cb9527abf9c44c0458c7653169853d9eb7d2c1b5809d9c59d"
+_github_sum="e7e6099b0872d45b3f39746b4086b1321bae3f23c1f15f451ef56b2a6dbbc4ef"
+_github_sig_sum="5fc83a6aeba3a5f9a3fcbf814ed762e861eb00d4ef000e9b4f46a086bc6f4395"
 # All of this stuff must absoleutely go as
 # soon as EVMFS 1.0 and gurl release
 # I'm tired of specifying different sums
@@ -495,6 +495,7 @@ prepare() {
     echo \
       "OS: ${_os}"
   fi
+  true
   # if [[ "${_os}" == "Android" ]]; then
   #   sed \
   #     -e \
