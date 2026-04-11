@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=28
+pkgrel=29
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -414,7 +414,7 @@ _android_configure() {
     "${_msg[*]}"
   sed \
     -e \
-      "%'/bin/true'%'true'%g" \
+      "s%'/bin/true'%'true'%g" \
     -i \
     "${srcdir}/${_tarname}/doc/meson.build"
   cat \
