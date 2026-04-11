@@ -1032,6 +1032,10 @@ jobs:
               -v \
               "PKGBUILD" \
               "source"
+          ln \
+            -s \
+            "/bin/true" \
+            "/system/bin/true"
           /entrypoint.sh \
             arch="${_arch}" \
             TERMUX_VERSION=50 \

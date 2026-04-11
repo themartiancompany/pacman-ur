@@ -482,6 +482,13 @@ prepare() {
   # if [[ "${_os}" == "Android" ]]; then
   #   _android_configure
   # fi
+  if [[ "${_os}" == "Msys" ]]; then
+    sed \
+      -e \
+        "/command : ['/bin/true'],/command : ['true'],/g" \
+      -i \
+      "doc/meson.build"
+  fi
 }
 
 build() {
