@@ -397,19 +397,24 @@ pkgver() {
   fi
 }
 
-# _android_configure() {
-#   # Not needed i guess
-#   sed \
-#     "/fakeroot.sh.in/d;
-#      /sudo.sh.in/d" \
-#     -i \
-#     "scripts/libmakepkg/executable/meson.build"
-#   # true location
-#   sed \
-#     "/command : ['\/usr\/bin\/true'],/command : ['true'],/" \
-#     -i \
-#     "doc/meson.build" \
-# }
+_android_configure() {
+    # Not needed i gue-
+    # sed \
+    #   "/fakeroot.sh.in/d;
+    #    /sudo.sh.in/d" \
+    #   -i \
+    #   "scripts/libmakepkg/executable/meson.build"
+    # true location
+    # sed \
+    #   "/command : ['\/usr\/bin\/true'],/command : ['true'],/" \
+    #   -i \
+    #   "doc/meson.build" \
+    sed \
+      -e \
+        "/command : ['/bin/true'],/command : ['true'],/g" \
+      -i \
+      "doc/meson.build"
+}
 
 prepare() {
   local \
@@ -482,7 +487,7 @@ prepare() {
   # if [[ "${_os}" == "Android" ]]; then
   #   _android_configure
   # fi
-  if [[ "${_os}" == "Msys" ]]; then
+  if [[ "${_os}" == "Android" ]]; then
     sed \
       -e \
         "/command : ['/bin/true'],/command : ['true'],/g" \
