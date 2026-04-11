@@ -169,7 +169,7 @@ pkgrel=1
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
-_commit="26945b51e01b1b1f7b25ff69f80f10b559953071"
+_commit="2d558dbfd89ad998700c201607730dbc1d45eca2"
 _git_patch_level_commit="1f38429b1c5f30edce30c731aa352e6363cc788e"
 _pkgdesc=(
   "A library-based package"
@@ -290,8 +290,8 @@ _tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _bundle_sum="dc93b98c622e4eeb36969e26982f727d63f54e69b2083ade3e074f716bb22ce6"
 _bundle_sig_sum="b1f3f0591e12b8e2f374aa2b806d6bce5e1b27544195ea5f40e0ba1e18a37339"
-_github_sum="ea82d788392ffac6183265afabf6d870272620b3bc773cead1491c4eb3253752"
-_github_sig_sum="72ae89df8126415341205c8f9d5604f026f3b340cccba4003c12aab49367e816"
+_github_sum="12be6769734c2c6739f936b5c897d89411bb935b7a2c7902f54d73615426d705"
+_github_sig_sum="becb8d0a36ee172fa456c810dbc2faaf03235946905320c8a6a3b5d9c49a01a4"
 # All of this stuff must absoleutely go as
 # soon as EVMFS 1.0 and gurl release
 # I'm tired of specifying different sums
@@ -510,7 +510,21 @@ prepare() {
 build() {
   local \
     _docs_option \
-    _meson_opts=()
+    _meson_opts=() \
+    _cflags=() \
+    _os
+  _os="$(
+    uname \
+      -o)"
+  _cflags+=(
+    ${CFLAGS}
+  )
+  if [[ "${_os}" == "Android" ]]; then
+    _cflags+=(
+      -Wno-format-security
+      -Nno-undeclared-identifier
+    )
+  fi
   if [[ "${_docs}" == "true" ]]; then
     _docs_option="enabled"
     _doxygen_option="enabled"
