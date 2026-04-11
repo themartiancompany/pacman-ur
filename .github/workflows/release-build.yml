@@ -293,6 +293,13 @@ jobs:
                 file \
                 build-essential
       - name:
+          Install docutils.
+        run: |
+          /entrypoint.sh \
+            pip \
+              install \
+                "docutils"
+      - name:
           Installs make.
         run: |
           /entrypoint.sh \
@@ -934,13 +941,6 @@ jobs:
             pacman \
               -Sy || \
             true
-      - name:
-          Install docutils.
-        run: |
-          /entrypoint.sh \
-            pip \
-              install \
-                "docutils"
       - name:
           Read pkgbase.
         run: |
