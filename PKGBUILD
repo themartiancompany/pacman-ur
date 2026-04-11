@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=10
+pkgrel=11
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -423,12 +423,14 @@ prepare() {
       -o)"
   cd \
     "${_tarname}"
-  _commit_short="$(
-    git \
-      describe \
-        --tags \
-        --abbrev=0 \
-        "${_git_patch_level_commit}")"
+  if [[ "${_git}" == "true" ]]; then
+    _commit_short="$(
+      git \
+        describe \
+          --tags \
+          --abbrev=0 \
+          "${_git_patch_level_commit}")"
+  fi
   # apply patch level commits on top of annotated tag
   # if [[ -n "${_git_patch_level_commit}" ]]; then
   #   if [[ "v${_git_tag}" != "${_commit_short}" ]] then

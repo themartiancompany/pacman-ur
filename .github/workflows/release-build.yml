@@ -459,6 +459,7 @@ jobs:
               -vDm644 \
               "${HOME}/reallymakepkg-src/configs/makepkg.android.conf" \
               "/data/data/com.termux/files/usr/etc/reallymakepkg/makepkg.android.conf"
+          /entrypoint.sh \
             pkg \
               install \
                 -y \
