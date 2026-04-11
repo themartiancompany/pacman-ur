@@ -313,7 +313,6 @@ jobs:
           /entrypoint.sh \
             pip \
               install \
-                -y \
                 "meson"
       - name:
           Installs Crash Bash Library.
