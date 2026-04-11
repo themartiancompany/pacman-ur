@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=4
+pkgrel=5
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -297,9 +297,18 @@ _github_sig_sum="be6b65c74c376f4cb9527abf9c44c0458c7653169853d9eb7d2c1b5809d9c59
 # I'm tired of specifying different sums
 # when everything can just be derived from
 # the commit
-if [[ "${_git_service}" == "github" ]]; then
-  _sum="${_github_sum}"
-  _sig_sum="${_github_sig_sum}"
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    _sum="${_bundle_sum}"
+    _sig_sum="${_bundle_sig_sum}"
+  fi
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _sum="${_github_sum}"
+      _sig_sum="${_github_sig_sum}"
+    fi
+  fi
 fi
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
@@ -322,10 +331,10 @@ if [[ "${_evmfs}" == "true" ]]; then
     _sum="${_github_sum}"
   elif [[ "${_git}" == "true" ]]; then
     source+=(
-      "${_bundle_sig_src}"
+      "${_sig_src}"
     )
     sha256sums+=(
-      "${_bundle_sig_sum}"
+      "${_sig_sum}"
     )
     _sum="${_bundle_sum}"
   fi
@@ -382,19 +391,19 @@ pkgver() {
   fi
 }
 
-_android_configure() {
-  # Not needed i guess
-  sed \
-    "/fakeroot.sh.in/d;
-     /sudo.sh.in/d" \
-    -i \
-    "scripts/libmakepkg/executable/meson.build"
-  # true location
-  sed \
-    "/command : ['\/usr\/bin\/true'],/command : ['true'],/" \
-    -i \
-    "doc/meson.build" \
-}
+# _android_configure() {
+#   # Not needed i guess
+#   sed \
+#     "/fakeroot.sh.in/d;
+#      /sudo.sh.in/d" \
+#     -i \
+#     "scripts/libmakepkg/executable/meson.build"
+#   # true location
+#   sed \
+#     "/command : ['\/usr\/bin\/true'],/command : ['true'],/" \
+#     -i \
+#     "doc/meson.build" \
+# }
 
 prepare() {
   local \
@@ -462,9 +471,9 @@ prepare() {
       fi
     done
   fi
-  if [[ "${_os}" == "Android" ]]; then
-    _android_configure
-  fi
+  # if [[ "${_os}" == "Android" ]]; then
+  #   _android_configure
+  # fi
 }
 
 build() {
