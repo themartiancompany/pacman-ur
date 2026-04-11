@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.1
 pkgver="${_pkgver}"
-pkgrel=24
+pkgrel=25
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag=7.1.0.1
@@ -484,16 +484,16 @@ prepare() {
       fi
     done
   fi
-  # if [[ "${_os}" == "Android" ]]; then
-  #   _android_configure
-  # fi
   if [[ "${_os}" == "Android" ]]; then
-    sed \
-      -e \
-        "/command : ['/bin/true'],/command : ['true'],/g" \
-      -i \
-      "doc/meson.build"
+    _android_configure
   fi
+  # if [[ "${_os}" == "Android" ]]; then
+  #   sed \
+  #     -e \
+  #       "/command : ['/bin/true'],/command : ['true'],/g" \
+  #     -i \
+  #     "doc/meson.build"
+  # fi
 }
 
 build() {
