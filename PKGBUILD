@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.12
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=3
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -399,6 +399,15 @@ pkgver() {
   fi
 }
 
+_root_get() {
+  dirname \
+    "$(dirname \
+         "$(dirname \
+              command \
+                -v \
+                "env")")"
+}
+
 _android_configure() {
   local \
     _msg=()
@@ -432,7 +441,7 @@ _android_configure() {
     "${srcdir}/lib/libalpm/util.c"; do
     sed \
       -e \
-        "s%@ANDROID_ROOT@%/data/data/com.termux/files%g" \
+        "s%@ANDROID_ROOT@%$(_root_get)%g" \
       -i \
       "${_file}"
   done
