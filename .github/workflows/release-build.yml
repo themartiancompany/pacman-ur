@@ -2424,6 +2424,8 @@ jobs:
                 "${_depend_name}" || \
               true; \
           done
+      - uses:
+          actions/checkout@v3
       - name:
           Builds the Windows package.
         run: |
