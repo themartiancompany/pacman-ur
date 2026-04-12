@@ -163,9 +163,9 @@ pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
-_pkgver=7.1.0.15
+_pkgver=7.1.0.16
 pkgver="${_pkgver}"
-pkgrel=14
+pkgrel=2
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -668,16 +668,17 @@ package() {
     install \
       -vdm755 \
       "${_wantsdir}"
+    for _unit in "dirmngr" \
+                 "gpg-agent" \
+                 "gpg-agent-"{"browser","extra","ssh"} \
+                 "keyboxd"; do
+      ln \
+        -s \
+        "../${_unit}@.socket" \
+        "${_wantsdir}/${_unit}@etc-${_pkg}.d-gnupg.socket"
+    done
   fi
-  for _unit in "dirmngr" \
-               "gpg-agent" \
-               "gpg-agent-"{"browser","extra","ssh"} \
-               "keyboxd"; do
-    ln \
-      -s \
-      "../${_unit}@.socket" \
-      "${_wantsdir}/${_unit}@etc-${_pkg}.d-gnupg.socket"
-  done
+  true
 }
 
 # vim: set ts=2 sw=2 et:
