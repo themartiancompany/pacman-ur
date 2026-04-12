@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.16
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=3
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -561,7 +561,12 @@ build() {
     _docs_option \
     _meson_opts=() \
     _cflags=() \
+    _meson \
     _os
+  _meson="$(
+    command \
+      -v \
+      "meson")"
   _os="$(
     uname \
       -o)"
@@ -581,6 +586,9 @@ build() {
         command \
           -v \
           "gcc")"
+    _meson="/mingw64/bin/meson"
+    echo \
+      "meson: '${_meson}'"
     echo \
       "compiler: '${CC}'"
   fi
