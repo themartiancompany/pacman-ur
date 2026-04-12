@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.15
 pkgver="${_pkgver}"
-pkgrel=12
+pkgrel=13
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -435,9 +435,14 @@ _android_configure() {
     "${srcdir}/${_tarname}/doc/meson.build"
   cat \
     "${srcdir}/${_tarname}/doc/meson.build"
+  # sed \
+  #   -e \
+  #     "s%BINDIR, symlink%'@ANDROID_ROOT@/bin', symlink%g" \
+  #   -i \
+  #   "${srcdir}/${_tarname}/scripts/meson.build"
   sed \
     -e \
-      "s%BINDIR, symlink%'@ANDROID_ROOT@/bin', symlink%g" \
+      "s%join_paths(BINDIR, symlink))%join_paths(BINDIR, symlink), '@ANDROID_ROOT@/bin')%g" \
     -i \
     "${srcdir}/${_tarname}/scripts/meson.build"
   # sed \
