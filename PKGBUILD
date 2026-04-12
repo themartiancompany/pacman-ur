@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.15
 pkgver="${_pkgver}"
-pkgrel=5
+pkgrel=6
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -561,6 +561,15 @@ build() {
       #-Nno-undeclared-identifiers
       -Wno-incompatible-pointer-types
     )
+  fi
+  if [[ "${_os}" == "Msys" ]]; then
+    export \
+      CC="$(
+        command \
+          -v \
+          "gcc")"
+    echo \
+      "compiler: '${CC}'"
   fi
   if [[ "${_docs}" == "true" ]]; then
     _docs_option="enabled"
