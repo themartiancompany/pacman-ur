@@ -162,7 +162,7 @@ pkgname=(
 )
 _pkgver=7.1.0.16
 pkgver="${_pkgver}"
-pkgrel=4
+pkgrel=5
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -591,7 +591,7 @@ build() {
   if [[ "${_os}" == "Msys" ]]; then
     pacman \
       -Ql \
-      mingw-w64-${{ matrix.env }}-gcc | \
+      mingw-w64-x86_64-gcc | \
       grep \
         "bin"
     export \
