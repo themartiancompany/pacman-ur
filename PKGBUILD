@@ -165,7 +165,7 @@ pkgname=(
 )
 _pkgver=7.1.0.15
 pkgver="${_pkgver}"
-pkgrel=9
+pkgrel=10
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -595,10 +595,12 @@ build() {
     "${_tarname}"
   DESTDIR="${pkgdir}" \
   meson \
+    --verbose \
     "${_meson_opts[@]}" \
     build
   DESTDIR="${pkgdir}" \
   meson \
+    --verbose \
     compile \
     -C \
       "build"
