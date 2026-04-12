@@ -221,6 +221,11 @@ makedepends=(
   "gettext"
   "meson"
 )
+if [[ "${_os}" == "Android" ]]; then
+  makedepends+=(
+    "termux-tools"
+  )
+fi
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
     "asciidoc"
@@ -445,6 +450,8 @@ _android_configure() {
       "s%join_paths(BINDIR, symlink))%join_paths(BINDIR, symlink), '@ANDROID_ROOT@/bin')%g" \
     -i \
     "${srcdir}/${_tarname}/scripts/meson.build"
+  termux-fix-shebang \
+    "${srcdir}/${_tarname}/build-aux/meson-make-symlink.sh"
   # sed \
   #   -e \
   #     "s%'ln', '-sf', 'repo-add', '@OUTPUT@'%'ln', '-sf', 'repo-add', '@OUTPUT@', '@ANDROID_ROOT@'%g" \
