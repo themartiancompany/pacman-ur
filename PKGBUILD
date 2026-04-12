@@ -80,9 +80,6 @@ elif [[ "${_os}" == "Msys" ]]; then
   _libc_headers="msys2-w32api-headers"
   _compiler="gcc"
   _libcompiler="gcc-libs"
-  _npth="npth"
-  _pcsclite="pcsclite"
-  _pcsclite="pcsclite"
   _sh="sh"
 else
   _msg=(
@@ -165,7 +162,7 @@ pkgname=(
 )
 _pkgver=7.1.0.16
 pkgver="${_pkgver}"
-pkgrel=3
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -202,6 +199,7 @@ depends=(
   "gawk"
   "gettext"
   "${_libc}"
+  "${_libcompiler}"
   "gnupg"
   "gpgme"
   "libgpgme.so"
@@ -220,10 +218,20 @@ fi
 makedepends=(
   "gettext"
   "meson"
+  "${_libc}"
+  "${_compiler}"
+  "${_libcompiler}"
 )
+
 if [[ "${_os}" == "Android" ]]; then
   makedepends+=(
     "termux-tools"
+  )
+fi
+if [[ "${_os}" == "Msys" ]]; then
+  makedepends+=(
+    "${_libc_headers}"
+    "windows-default-manifest"
   )
 fi
 if [[ "${_docs}" == "true" ]]; then
@@ -581,11 +589,18 @@ build() {
     )
   fi
   if [[ "${_os}" == "Msys" ]]; then
+    pacman \
+      -Ql \
+      mingw-w64-${{ matrix.env }}-gcc | \
+      grep \
+        "bin"
     export \
       CC="$(
         command \
           -v \
           "gcc")"
+      # CC="mingw-w64-x86_64-gcc" \
+      # LD="$(which ld)"
     _meson="/mingw64/bin/meson"
     echo \
       "meson: '${_meson}'"
