@@ -287,6 +287,13 @@ source=(
   "alpm.sysusers"
   "fortran.conf"
   "rust.conf"
+  # Windows
+  "makepkg.msys.conf"
+  "makepkg_mingw.conf"
+  "makepkg_mingw.d.clang64.conf"
+  "makepkg_mingw.d.clangarm64.conf"
+  "makepkg_mingw.d.mingw64.conf"
+  "makepkg_mingw.d.ucrt64.conf"
 )
 sha256sums=(
   'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
@@ -295,6 +302,13 @@ sha256sums=(
   "190ef25d5a320d7cfe7a17683d1956f0c39710291ae27d0968d12f431cb2bdaa"
   '933b0b878fa611bf24b92f655040a3bcb4a1b67841d929013802abbb09b2ccf4'
   "6fe03e6ea3f69d99d59a48847a8ae97c2160fca847c7aedf7b89d05e4aa9386d"
+  # Windows
+  "9ed1492c92d9c46e117738365eee25e8fa622a92b1f4db288e919b3102be3c6b"
+  "6c9ce9f77b397435fc62966c8d56056f28d10cba16dcb964e4d9f39b9a50b7e5"
+  "5f62ef7f560c5215348bd26ff4a7fd9a7f8857193bbad43f139dbff7df449350"
+  "500e46d05baccd23ec24245afd66084510b99baf3ebcd2fcc21d20687817abf5"
+  "96d7dfa9f17424918f4efbec2c08b6cc7aa31616324382be7483b96d7559e119"
+  "274e5dc04f8213c170da2c15ffaad216846ae047a7f21a34156d64f12ce75677"
 )
 _url="${url}"
 _tag="${_commit}"
