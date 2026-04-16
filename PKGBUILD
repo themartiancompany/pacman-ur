@@ -162,7 +162,7 @@ pkgname=(
 )
 _pkgver=7.1.0.17
 pkgver="${_pkgver}"
-pkgrel=1
+pkgrel=2
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -221,6 +221,7 @@ makedepends=(
   "${_libc}"
   "${_compiler}"
   "${_libcompiler}"
+  "libarchive"
 )
 
 if [[ "${_os}" == "Android" ]]; then
