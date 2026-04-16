@@ -162,7 +162,7 @@ pkgname=(
 )
 _pkgver=7.1.0.17
 pkgver="${_pkgver}"
-pkgrel=2
+pkgrel=3
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -456,11 +456,6 @@ _android_configure() {
       "s%'/bin/true'%'true'%g" \
     -i \
     "${srcdir}/${_tarname}/doc/meson.build"
-  sed \
-    -e \
-      "s%'/bin/true'%'true'%g" \
-    -i \
-    "${srcdir}/${_tarname}/doc/meson.build"
   cat \
     "${srcdir}/${_tarname}/doc/meson.build"
   # sed \
@@ -493,6 +488,14 @@ _android_configure() {
   done
   cat \
     "${srcdir}/${_tarname}/scripts/meson.build"
+}
+
+_windows_configure() {
+  sed \
+    -e \
+      "s%'/bin/true'%'true'%g" \
+    -i \
+    "${srcdir}/${_tarname}/doc/meson.build"
 }
 
 prepare() {
@@ -565,6 +568,8 @@ prepare() {
   fi
   if [[ "${_os}" == "Android" ]]; then
     _android_configure
+  elif [[ "${_os}" == "Msys" ]]; then
+    _windows_configure
   else
     echo \
       "OS: ${_os}"
