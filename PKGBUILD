@@ -162,7 +162,7 @@ pkgname=(
 )
 _pkgver=7.1.0.17
 pkgver="${_pkgver}"
-pkgrel=3
+pkgrel=4
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
@@ -609,6 +609,9 @@ build() {
     )
   fi
   if [[ "${_os}" == "Msys" ]]; then
+    _cflags+=(
+      -Wno-implicit-function-declaration
+    )
     pacman \
       -Ql \
       mingw-w64-x86_64-gcc | \
