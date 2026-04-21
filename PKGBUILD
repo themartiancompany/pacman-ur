@@ -67,14 +67,10 @@ if [[ "${_os}" == "Android" ]]; then
   _libc="ndk-sysroot"
   _compiler="clang"
   _libcompiler="llvm-libs"
-  _npth="libnpth"
-  _pcsclite="libpcsclite"
 elif [[ "${_os}" == "GNU/Linux" ]]; then
   _libc="glibc"
   _compiler="gcc"
   _libcompiler="libgcc"
-  _npth="npth"
-  _pcsclite="pcsclite"
 elif [[ "${_os}" == "Msys" ]]; then
   _libc="msys2-w32api-runtime"
   _libc_headers="msys2-w32api-headers"
@@ -91,9 +87,6 @@ else
   _libc_headers="msys2-w32api-headers"
   _compiler="gcc"
   _libcompiler="gcc-libs"
-  _npth="npth"
-  _pcsclite="pcsclite"
-  _pcsclite="pcsclite"
   _sh="sh"
 fi
 _evmfs_available="$(
@@ -139,8 +132,17 @@ if [[ ! -v "_archive_format" ]]; then
     fi
   fi
 fi
+if [[ ! -v "_bash" ]]; then
+  _shell="bash"
+fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
+fi
+if [[ ! -v "_sissystemd" ]]; then
+  _sissystemd="false"
+  if [[ "${_os}" == "Android" ]]; then
+    _sissystemd="true"
+  fi
 fi
 if [[ ! -v "_systemd" ]]; then
   if [[ "${_os}" == "Android" || \
@@ -148,6 +150,8 @@ if [[ ! -v "_systemd" ]]; then
     # should check if sissystemd is
     # available
     _systemd="false"
+    if [[ "" ]]; then
+    fi
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     # for now we do assume yes
     # but it should simply be detected
@@ -161,6 +165,7 @@ pkgname=(
   "${_pkg}"
 )
 _pkgver=7.1.0.17
+_gnupg_pkgver=2.5
 pkgver="${_pkgver}"
 pkgrel=4
 # use annotated tag and patch level commit
@@ -192,7 +197,7 @@ license=(
   'GPL-2.0-or-later'
 )
 depends=(
-  "bash"
+  "${_shell}"
   "coreutils"
   "curl"
   "libcurl.so"
@@ -200,7 +205,9 @@ depends=(
   "gettext"
   "${_libc}"
   "${_libcompiler}"
-  "gnupg"
+  # "gnupg"
+  # Test QR
+  "gnupg>=${_gnupg_pkgver}"
   "gpgme"
   "libgpgme.so"
   "grep"
@@ -208,10 +215,10 @@ depends=(
   "libarchive.so"
   "openssl"
   "libcrypto.so"
+  "${_pkg}-mirrorlist"
 )
-if [[ "${_os}" == "GNU/Linux" ]]; then
+if [[ "${_systemd}" == "true" ]]; then
   depends+=(
-    "${_pkg}-mirrorlist"
     "systemd"
   )
 fi

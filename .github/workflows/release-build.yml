@@ -2334,7 +2334,7 @@ jobs:
         run: |
           mkdir \
             -p \
-            "/root/temp"
+            "/root/package.orig"
           # sha256sum \
           #   "arch-meson"
           # dos2unix \
