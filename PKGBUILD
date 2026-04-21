@@ -150,8 +150,6 @@ if [[ ! -v "_systemd" ]]; then
     # should check if sissystemd is
     # available
     _systemd="false"
-    if [[ "" ]]; then
-    fi
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     # for now we do assume yes
     # but it should simply be detected
@@ -167,7 +165,7 @@ pkgname=(
 _pkgver=7.1.0.17
 _gnupg_pkgver=2.5
 pkgver="${_pkgver}"
-pkgrel=4
+pkgrel=5
 # use annotated tag and patch level commit
 # from release branch (can be empty for no patches)
 _git_tag="${_pkgver}"
