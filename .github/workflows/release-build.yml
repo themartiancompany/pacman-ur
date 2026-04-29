@@ -365,12 +365,12 @@ jobs:
             pacman \
               -Ql \
               "fur"
-          /entrypoint.sh \
-            pkg \
-              install \
-                -y \
-                "coreutils" || \
-          true
+          # /entrypoint.sh \
+          #   pkg \
+          #     install \
+          #       -y \
+          #       "coreutils" || \
+          # true
           cat \
             "/entrypoint.sh"
           export \
@@ -659,58 +659,58 @@ jobs:
                 "n" \
               -T \
               "filesystem"
-      - name:
-          Installs Coreutils.
-        run: |
-          /entrypoint.sh \
-            pacman \
-              -Sy \
-              --noconfirm \
-              --overwrite="*" \
-              "coreutils" || \
-            true
+      # - name:
+      #     Installs Coreutils.
+      #   run: |
+      #     /entrypoint.sh \
+      #       pacman \
+      #         -Sy \
+      #         --noconfirm \
+      #         --overwrite="*" \
+      #         "coreutils" || \
+      #       true
       - uses:
           actions/checkout@v4.2.2
-      - name:
-          Installs EVM Chains Info.
-        run: |
-          /entrypoint.sh \
-            platform-get \
-            -v
-          cat \
-            "/entrypoint.sh"
-          which \
-            "fur"
-          /entrypoint.sh \
-            fur \
-              -v \
-              -h
-          $(which \
-              "fur") \
-            -v \
-            -h || \
-          true
-          /entrypoint.sh \
-            fur \
-              -v \
-              -p \
-                "pacman" \
-              -m \
-                "github" \
-              -t \
-                "tree" \
-              -T \
-              "evm-chains-info" || \
-            true
-      - name:
-          Installs EVM Chains Explorers.
-        run: |
-          /entrypoint.sh \
-            fur \
-              -v \
-              -p \
-                "pacman" \
-              "evm-chains-explorers"
+      # - name:
+      #     Installs EVM Chains Info.
+      #   run: |
+      #     /entrypoint.sh \
+      #       platform-get \
+      #       -v
+      #     cat \
+      #       "/entrypoint.sh"
+      #     which \
+      #       "fur"
+      #     /entrypoint.sh \
+      #       fur \
+      #         -v \
+      #         -h
+      #     $(which \
+      #         "fur") \
+      #       -v \
+      #       -h || \
+      #     true
+      #     /entrypoint.sh \
+      #       fur \
+      #         -v \
+      #         -p \
+      #           "pacman" \
+      #         -m \
+      #           "github" \
+      #         -t \
+      #           "tree" \
+      #         -T \
+      #         "evm-chains-info" || \
+      #       true
+      # - name:
+      #     Installs EVM Chains Explorers.
+      #   run: |
+      #     /entrypoint.sh \
+      #       fur \
+      #         -v \
+      #         -p \
+      #           "pacman" \
+      #         "evm-chains-explorers"
       # - name:
       #     Installs LibEVM.
       #   run: |
