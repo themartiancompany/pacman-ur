@@ -228,7 +228,6 @@ makedepends=(
   "${_libcompiler}"
   "libarchive"
 )
-
 if [[ "${_os}" == "Android" ]]; then
   makedepends+=(
     "termux-tools"
@@ -249,6 +248,11 @@ fi
 if [[ "${_git}" == "true" ]]; then
   makedepends+=(
     "git"
+  )
+fi
+if [[ "${_evmfs}" == "true" ]]; then
+  makedepends+=(
+    "evmfs"
   )
 fi
 checkdepends=(
