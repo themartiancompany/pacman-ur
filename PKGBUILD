@@ -222,6 +222,7 @@ if [[ "${_systemd}" == "true" ]]; then
 fi
 makedepends=(
   "gettext"
+  "gnupg>=${_gnupg_pkgver}"
   "meson"
   "${_libc}"
   "${_compiler}"
